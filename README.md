@@ -3,7 +3,7 @@
 
 
 ### Demo:
-<div align=center><img width="640" height="360" src="./assets/demo.gif"/></div>
+<div align=center><img width="640" height="360" src="./assets/teaser.gif"/></div>
 
 
 ### Framework:
