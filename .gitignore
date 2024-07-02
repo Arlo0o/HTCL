@@ -1,0 +1,5 @@
+*.pth
+output/
+./output
+./log
+.vscode
