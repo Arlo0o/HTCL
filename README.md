@@ -155,9 +155,6 @@ bash  run_eval_kitti.sh   \
             pretrain/pretrain.pth 
 ```
 
-bash  run_eval_kitti.sh   \
-            projects/configs/occupancy/semantickitti/temporal_baseline.py \
-            pretrain.pth 
 
 
 
