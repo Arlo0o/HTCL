@@ -1,0 +1,30 @@
+ninja_required_version = 1.3
+cxx = c++
+nvcc = /usr/local/cuda/bin/nvcc
+
+cflags = -pthread -B /opt/conda/envs/occA100/compiler_compat -Wl,--sysroot=/ -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -DWITH_CUDA -I/code/occupancy-lss/occupancy-lss-0603/projects/mmdet3d_plugin/occupancy/image2bev/D3Dnet/code/dcn/src -I/opt/conda/envs/occA100/lib/python3.7/site-packages/torch/include -I/opt/conda/envs/occA100/lib/python3.7/site-packages/torch/include/torch/csrc/api/include -I/opt/conda/envs/occA100/lib/python3.7/site-packages/torch/include/TH -I/opt/conda/envs/occA100/lib/python3.7/site-packages/torch/include/THC -I/usr/local/cuda/include -I/opt/conda/envs/occA100/include/python3.7m -c
+post_cflags = -DTORCH_API_INCLUDE_EXTENSION_H '-DPYBIND11_COMPILER_TYPE="_gcc"' '-DPYBIND11_STDLIB="_libstdcpp"' '-DPYBIND11_BUILD_ABI="_cxxabi1011"' -DTORCH_EXTENSION_NAME=D3D -D_GLIBCXX_USE_CXX11_ABI=0 -std=c++14
+cuda_cflags = -DWITH_CUDA -I/code/occupancy-lss/occupancy-lss-0603/projects/mmdet3d_plugin/occupancy/image2bev/D3Dnet/code/dcn/src -I/opt/conda/envs/occA100/lib/python3.7/site-packages/torch/include -I/opt/conda/envs/occA100/lib/python3.7/site-packages/torch/include/torch/csrc/api/include -I/opt/conda/envs/occA100/lib/python3.7/site-packages/torch/include/TH -I/opt/conda/envs/occA100/lib/python3.7/site-packages/torch/include/THC -I/usr/local/cuda/include -I/opt/conda/envs/occA100/include/python3.7m -c
+cuda_post_cflags = -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ --expt-relaxed-constexpr --compiler-options ''"'"'-fPIC'"'"'' -DCUDA_HAS_FP16=1 -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ -DTORCH_API_INCLUDE_EXTENSION_H '-DPYBIND11_COMPILER_TYPE="_gcc"' '-DPYBIND11_STDLIB="_libstdcpp"' '-DPYBIND11_BUILD_ABI="_cxxabi1011"' -DTORCH_EXTENSION_NAME=D3D -D_GLIBCXX_USE_CXX11_ABI=0 -gencode=arch=compute_80,code=compute_80 -gencode=arch=compute_80,code=sm_80 -std=c++14
+ldflags = 
+
+rule compile
+  command = $cxx -MMD -MF $out.d $cflags -c $in -o $out $post_cflags
+  depfile = $out.d
+  deps = gcc
+
+rule cuda_compile
+  depfile = $out.d
+  deps = gcc
+  command = $nvcc  $cuda_cflags -c $in -o $out $cuda_post_cflags
+
+
+
+build /code/occupancy-lss/occupancy-lss-0603/projects/mmdet3d_plugin/occupancy/image2bev/D3Dnet/code/dcn/build/temp.linux-x86_64-3.7/code/occupancy-lss/occupancy-lss-0603/projects/mmdet3d_plugin/occupancy/image2bev/D3Dnet/code/dcn/src/vision.o: compile /code/occupancy-lss/occupancy-lss-0603/projects/mmdet3d_plugin/occupancy/image2bev/D3Dnet/code/dcn/src/vision.cpp
+build /code/occupancy-lss/occupancy-lss-0603/projects/mmdet3d_plugin/occupancy/image2bev/D3Dnet/code/dcn/build/temp.linux-x86_64-3.7/code/occupancy-lss/occupancy-lss-0603/projects/mmdet3d_plugin/occupancy/image2bev/D3Dnet/code/dcn/src/cpu/deform_cpu.o: compile /code/occupancy-lss/occupancy-lss-0603/projects/mmdet3d_plugin/occupancy/image2bev/D3Dnet/code/dcn/src/cpu/deform_cpu.cpp
+build /code/occupancy-lss/occupancy-lss-0603/projects/mmdet3d_plugin/occupancy/image2bev/D3Dnet/code/dcn/build/temp.linux-x86_64-3.7/code/occupancy-lss/occupancy-lss-0603/projects/mmdet3d_plugin/occupancy/image2bev/D3Dnet/code/dcn/src/cuda/deform_conv_cuda.o: cuda_compile /code/occupancy-lss/occupancy-lss-0603/projects/mmdet3d_plugin/occupancy/image2bev/D3Dnet/code/dcn/src/cuda/deform_conv_cuda.cu
+
+
+
+
+

@@ -17,6 +17,7 @@ The primary innovation of this work involves decomposing temporal context learni
 
 # Table of Content
 - [News](#news)
+- [Quick Start](#quick-installation-on-a100)
 - [Installation](#step-by-step-installation-instructions)
 - [Prepare Data](#prepare-data)
 - [Pretrained Model](#pretrained-model)
@@ -25,6 +26,33 @@ The primary innovation of this work involves decomposing temporal context learni
 - [Acknowledgements](#acknowledgements)
 
 
+# News
+- [2023/07]: Demo and code released.
+- [2023/07]: Paper is on [arxiv](https://arxiv.org/abs/2407.02077)
+- [2023/07]: Paper is accepted on ECCV 2024.
+
+
+# Quick Installation on A100
+
+You can use our pre-picked environment on NVIDIA A100 with the following steps if using the same hardware:
+
+**a. Download the pre-picked package: [occA100](https://drive.google.com/file/d/1JX1TM13yGLjvfz54pTZ4so2nFPNcYa0h/view?usp=sharing).**
+
+**b. Unpack environment into directory occA100**
+```shell
+cd /opt/conda/envs/
+mkdir -p occA100
+tar -xzf occA100.tar.gz -C occA100 
+```
+**c. Activate the environment. This adds occA100/bin to your path.**
+```shell
+source occA100/bin/activate
+```
+
+You can also use Python executable file without activating or fixing the prefixes. 
+```shell
+./occA100/bin/python
+```
 
 
 # Step-by-step Installation Instructions
@@ -101,6 +129,14 @@ bash process_kitti.sh
 
 
 
+
+# Pretrained Model
+
+Download [Pretrained model](https://drive.google.com/file/d/1D0gP3S5uKo6pDZApCg7lrwOf5c5_yvC7/view?usp=share_link) on SemanticKITTI and [Efficientnet-b7 pretrained model](https://drive.google.com/file/d/14_Qci68SG-g-9BRwgR420cseH6BCeaSp/view?usp=sharing), put them in the folder `/pretrain`.
+
+
+
+
 # Training & Evaluation
 
 ## Single GPU
@@ -108,29 +144,33 @@ bash process_kitti.sh
 ```
 export PYTHONPATH="."  
 python tools/train.py   \
-            projects\configs\occupancy\semantickitti\temporal_baseline.py
+            projects/configs/occupancy/semantickitti/temporal_baseline.py
 ```
 
 - **Evaluate with single GPUs:**
 ```
 export PYTHONPATH="."  
-python tools/test.py  \
-            projects\configs\occupancy\semantickitti\temporal_baseline.py \
+python  run_eval_kitti.sh   \
+            projects/configs/occupancy/semantickitti/temporal_baseline.py \
             pretrain/pretrain.pth 
 ```
+
+bash  run_eval_kitti.sh    \
+            projects/configs/occupancy/semantickitti/temporal_baseline.py  \
+             /code/occupancy-lss/occupancy-lss-miou17_13/work_dirs/baseline_0706_temporal_crossattention_lr/best_semkitti_combined_IoU_epoch_1.pth   1
 
 
 ## Multiple GPUS
 - **Train with n GPUs:**
 ```
 bash run.sh  \
-        projects\configs\occupancy\semantickitti\temporal_baseline.py  n
+        projects/configs/occupancy/semantickitti/temporal_baseline.py  n
 ```
 
 - **Evaluate with n GPUs:**
 ```
  bash tools/dist_test.sh  \
-            projects\configs\occupancy\semantickitti\temporal_baseline.py \
+            projects/configs/occupancy/semantickitti/temporal_baseline.py \
             pretrain/pretrain.pth  n
 ```
 
@@ -138,3 +178,26 @@ bash run.sh  \
 
 # License
 This repository is released under the Apache 2.0 license as found in the [LICENSE](LICENSE) file.
+
+
+
+# Acknowledgements
+Many thanks to these excellent open source projects: 
+- [MonoScene](https://github.com/astra-vision/MonoScene)
+- [StereoScene](https://github.com/Arlo0o/StereoScene)
+
+
+
+## Citation
+If you find our paper and code useful for your research, please consider citing:
+
+```bibtex
+@article{li2023bridging,
+  title={Hierarchical Temporal Context Learning for Camera-based Semantic Scene Completion},
+  author={Li, Bohan and Deng, Jiajun and Zhang, Wenyao and Liang, Zhujin and Du, Dalong and Jin, Xin and Zeng, Wenjun},
+  journal={arXiv preprint arXiv:2407.02077},
+  year={2024}
+}
+
+```
+
