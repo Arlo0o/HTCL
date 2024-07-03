@@ -28,7 +28,7 @@ The primary innovation of this work involves decomposing temporal context learni
 
 # News
 - [2023/07]: Demo and code released.
-- [2023/07]: Paper is on [arxiv](https://arxiv.org/abs/2407.02077)
+- [2023/07]: Paper is on [arxiv](https://arxiv.org/abs/2407.02077).
 - [2023/07]: Paper is accepted on ECCV 2024.
 
 
@@ -36,9 +36,9 @@ The primary innovation of this work involves decomposing temporal context learni
 
 You can use our pre-picked environment on NVIDIA A100 with the following steps if using the same hardware:
 
-**a. Download the pre-picked package: [occA100](https://drive.google.com/file/d/1JX1TM13yGLjvfz54pTZ4so2nFPNcYa0h/view?usp=sharing).**
+**a. Download the pre-picked package:  [occA100](https://drive.google.com/file/d/1JX1TM13yGLjvfz54pTZ4so2nFPNcYa0h/view?usp=sharing).**
 
-**b. Unpack environment into directory occA100**
+**b. Unpack environment into directory occA100**.
 ```shell
 cd /opt/conda/envs/
 mkdir -p occA100
