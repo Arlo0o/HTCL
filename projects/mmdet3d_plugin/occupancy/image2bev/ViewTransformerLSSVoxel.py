@@ -365,7 +365,7 @@ class ViewTransformerLiftSplatShootVoxel(ViewTransformerLSSBEVDepth):
             imgl, imgr = imgl[:, -1, ...], imgr[:, -1, ...]
         imgl, imgr = F.interpolate(imgl.squeeze(1), size=[288, 960], mode='bilinear', align_corners=True), F.interpolate(imgr.squeeze(1), size=[288, 960], mode='bilinear', align_corners=True) 
         stereo_volume = self.leamodel(imgl, imgr, calib )["classfy_volume"]   
-        stereo_volume = F.interpolate(stereo_volume, size=[ 112, H, W ], mode='trilinear', align_corners=True).squeeze(1)  ##
+        stereo_volume = F.interpolate(stereo_volume, size=[ 112, H, W ], mode='trilinear', align_corners=True).squeeze(1)  
         stereo_volume = F.softmax(-stereo_volume, dim=1)
 
 

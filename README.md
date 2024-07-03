@@ -132,7 +132,7 @@ bash process_kitti.sh
 
 # Pretrained Model
 
-Download [Pretrained model](https://drive.google.com/file/d/1D0gP3S5uKo6pDZApCg7lrwOf5c5_yvC7/view?usp=share_link) on SemanticKITTI and [Efficientnet-b7 pretrained model](https://drive.google.com/file/d/14_Qci68SG-g-9BRwgR420cseH6BCeaSp/view?usp=sharing), put them in the folder `/pretrain`.
+Download [Pretrained model]() on SemanticKITTI and [Efficientnet-b7 pretrained model](https://drive.google.com/file/d/14_Qci68SG-g-9BRwgR420cseH6BCeaSp/view?usp=sharing), put them in the folder `./pretrain`.
 
 
 

@@ -38,10 +38,10 @@ sys.path.append('.')
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a detector')
-    parser.add_argument('config', default="projects/configs/occupancy/semantickitti/temporal_0608.py", help='train config file path')
-    parser.add_argument('--work-dir', default="work_dirs/baseline_0630_temporal", help=' work_dirs/debug  the dir to save logs and models')
-    parser.add_argument('--loadcheckpoint', default='work_dirs/baseline_0706_temporal_crossattention_lr/best_semkitti_combined_IoU_epoch_1.pth', 
-        help="work_dirs/baseline_lea_0613/best_semkitti_combined_IoU_epoch_22.pth work_dirs/baseline_0630_temporal_pretrain_multi/epoch_18.pth" )
+    parser.add_argument('config', default=None, help='train config file path')
+    parser.add_argument('--work-dir', default="work_dirs/baseline_0630_temporal", help='the dir to save logs and models')
+    parser.add_argument('--loadcheckpoint', default=None, 
+        help="the dir to load models" )
     parser.add_argument(
         '--resume-from', help='the checkpoint file to resume from')
     parser.add_argument(
