@@ -9,13 +9,6 @@ import torch.nn.functional as F
 import numpy as np
 import pdb
 
-# import argparse
-# parser = argparse.ArgumentParser(description='LEAStereo')
-# parser.add_argument('--fea_num_layers', type=int, default=6)
-# parser.add_argument('--fea_filter_multiplier', type=int, default=8)
-# parser.add_argument('--fea_block_multiplier', type=int, default=4)
-# parser.add_argument('--fea_step', type=int, default=3)
-# args = parser.parse_args()
 
 class Cell(nn.Module):
     def __init__(self, steps, block_multiplier, prev_prev_fmultiplier,
@@ -92,16 +85,14 @@ class newFeature(nn.Module):
         self.cells = nn.ModuleList()
         self.network_arch = torch.from_numpy(network_arch)
         self.cell_arch = torch.from_numpy(cell_arch)
-        # self._step = args.fea_step
+  
         self._step = 3
 
-        # self._num_layers = args.fea_num_layers
+     
         self._num_layers = 6
 
-        # self._block_multiplier = args.fea_block_multiplier
         self._block_multiplier = 4
 
-        # self._filter_multiplier = args.fea_filter_multiplier
         self._filter_multiplier = 8
 
 
@@ -150,16 +141,14 @@ class newFeature(nn.Module):
 
             self.cells += [_cell]
 
-        # self.last_3  = ConvBR(initial_fm , initial_fm, 1, 1, 0, bn=False, relu=False)
-        self.last_3  = nn.Conv2d(initial_fm , initial_fm, 1, 1, 0) 
-        # self.last_6  = ConvBR(initial_fm*2 , initial_fm,    1, 1, 0)  
-        # self.last_12 = ConvBR(initial_fm*4 , initial_fm*2,  1, 1, 0)  
-        # self.last_24 = ConvBR(initial_fm*8 , initial_fm*4,  1, 1, 0)  
 
-    def forward(self, x):  ## [1, 3, 288, 1152]
-        stem0 = self.stem0(x)  ## [1, 16, 288, 1152]
+        self.last_3  = nn.Conv2d(initial_fm , initial_fm, 1, 1, 0) 
+
+
+    def forward(self, x):  #
+        stem0 = self.stem0(x)  
        
-        stem1 = self.stem1(stem0) ###  [1, 32, 96, 384]
+        stem1 = self.stem1(stem0) 
         stem2 = self.stem2(stem1)
         out = (stem1, stem2)
 
@@ -169,18 +158,11 @@ class newFeature(nn.Module):
         last_output = out[-1]
 
         h, w = stem2.size()[2], stem2.size()[3]
-        # upsample_6  = nn.Upsample(size=stem2.size()[2:], mode='bilinear', align_corners=True)
-        # upsample_12 = nn.Upsample(size=[h//2, w//2], mode='bilinear', align_corners=True)
-        # upsample_24 = nn.Upsample(size=[h//4, w//4], mode='bilinear', align_corners=True)
+   
 
-        # if last_output.size()[2] == h:
+
         fea = self.last_3(last_output)
-        # elif last_output.size()[2] == h//2:
-        #     fea = self.last_3(upsample_6(self.last_6(last_output)))
-        # elif last_output.size()[2] == h//4:
-        #     fea = self.last_3(upsample_6(self.last_6(upsample_12(self.last_12(last_output)))))
-        # elif last_output.size()[2] == h//8:
-        #     fea = self.last_3(upsample_6(self.last_6(upsample_12(self.last_12(upsample_24(self.last_24(last_output)))))))        
+      
 
         return fea
 

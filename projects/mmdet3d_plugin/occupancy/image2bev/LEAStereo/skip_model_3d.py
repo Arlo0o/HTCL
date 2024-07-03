@@ -159,21 +159,13 @@ class newMatching(nn.Module):
         out9 = self.cells[9](out8[0], out8_cat)
         out10= self.cells[10](out9[0], out9[1])
         out11= self.cells[11](out10[0],out10[1])
-        last_output = out11[-1]   ##### [1, 64, 32, 48, 192]
+        last_output = out11[-1]   ###
 
         d, h, w = x.size()[2], x.size()[3], x.size()[4]
         upsample_6  = nn.Upsample(size=x.size()[2:], mode='trilinear', align_corners=True)
-        # upsample_12 = nn.Upsample(size=[d//2, h//2, w//2], mode='trilinear', align_corners=True)
-        # upsample_24 = nn.Upsample(size=[d//4, h//4, w//4], mode='trilinear', align_corners=True)
-
-        # if last_output.size()[3] == h:
-        #     mat = self.last_3(last_output)
-        # elif last_output.size()[3] == h//2:
+       
         mat = self.last_6(last_output)
-        mat = self.last_3(upsample_6( mat ))  ### self.last_6: 64,32;  32,1
-        # elif last_output.size()[3] == h//4:
-        #     mat = self.last_3(upsample_6(self.last_6(upsample_12(self.last_12(last_output)))))
-        # elif last_output.size()[3] == h//8:
-        #     mat = self.last_3(upsample_6(self.last_6(upsample_12(self.last_12(upsample_24(self.last_24(last_output)))))))      
+        mat = self.last_3(upsample_6( mat ))  
+      
         return mat  
 

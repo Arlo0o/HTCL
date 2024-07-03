@@ -139,21 +139,14 @@ class BEVDepthOccupancy(BEVDepth):
         img_left_ref, img_right_ref = img_left[ :, -1, ... ], img_right[ :, -1, ... ]
         img_left_sour, img_right_sour = img_left[:,:-1, ... ].squeeze(2).contiguous(), img_right[:,:-1, ... ].squeeze(2).contiguous()
 
-        img_left_ref_feature = self.image_encoder( img_left_ref ) ### B Temporal  C H W
-        # img_left_sour_feature = self.image_encoder_source( img_left_sour ) ### B Temporal  C H W
-
-
-
-        # if T>1:
-        #     sourcel_fuse = self.FuseNet(sourcel)
-        #     sourcer_fuse = self.FuseNet(sourcer)
-
+        img_left_ref_feature = self.image_encoder( img_left_ref ) 
+      
 
         x, x2 = img_left_ref_feature, None 
         img_feats = x.clone()
          
         img, img2 = img[0], img[1]
-        filenamesl, filenamesr = img[-1], img2[-1]  ### [2, 4, 1280, 384, 3]
+        filenamesl, filenamesr = img[-1], img2[-1] 
 
 
         if self.record_time:

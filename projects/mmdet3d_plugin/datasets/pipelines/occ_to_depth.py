@@ -428,16 +428,7 @@ class CreateDepthFromLiDAR(object):
         seg_projected_points = seg_projected_points[seg_order]
         flatten_seg = flatten_seg[seg_order]
         img_seg[seg_projected_points[:, 1].round().long(), seg_projected_points[:, 0].round().long()] = flatten_seg
-        results['img_seg'] = img_seg  ### [384, 1280] 点云seg图
-
-        
-        # self.visualize(results['canvas'], img_depth, img_seg,out_path='debug_lidar_projections2')  ################### 可视化
-        # from PIL import Image
-        # out = img_seg.squeeze().data.cpu().numpy()
-        # img = (out+100).astype('uint8')
-        # img = Image.fromarray(img)
-        # img.save("1.png")
-
+        results['img_seg'] = img_seg  
 
         
         imgs, rots, trans, intrins, post_rots, post_trans, bda_rot, gt_depths, sensor2sensors, calib , filenamesr = results['img_inputs'][1]
@@ -445,7 +436,6 @@ class CreateDepthFromLiDAR(object):
         tmp2 = [imgs, rots, trans, intrins, post_rots, post_trans, bda_rot, img_depth.unsqueeze(0), sensor2sensors, calib, filenamesr]
         results['img_inputs'] = [tmp1,tmp2]
         
-        # print("img_depth.shape",  results['img_inputs'][0][7].shape)
                
         return results
         

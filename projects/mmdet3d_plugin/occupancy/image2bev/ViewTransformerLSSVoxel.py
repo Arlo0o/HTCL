@@ -42,7 +42,7 @@ class volume_interaction(nn.Module):
         self.out3 = nn.Sequential(convbn_3d(32, 32, 3, 1, 1),
                                    nn.ReLU(inplace=True),
                                    nn.Conv3d(32, 1, 3, 1, 1))
-    def forward(self, stereo_volume, lss_volume):  ### [2, 112, 48, 160]
+    def forward(self, stereo_volume, lss_volume): 
         stereo_volume=stereo_volume.unsqueeze(1)
         lss_volume=lss_volume.unsqueeze(1)
         all_volume=torch.cat( (stereo_volume, lss_volume ), dim=1)
@@ -69,7 +69,7 @@ class temporal_interaction(nn.Module):
         self.out3 = nn.Sequential(convbn_3d(32, 32, 3, 1, 1),
                                    nn.ReLU(inplace=True),
                                    nn.Conv3d(32, 1, 3, 1, 1))
-    def forward(self, stereo_volume, lss_volume):  ### [2, 112, 48, 160]
+    def forward(self, stereo_volume, lss_volume):  
         stereo_volume=stereo_volume.unsqueeze(1)
         lss_volume=lss_volume.unsqueeze(1)
         all_volume=torch.cat( (stereo_volume, lss_volume ), dim=1)
@@ -183,19 +183,19 @@ class ViewTransformerLiftSplatShootVoxel(ViewTransformerLSSBEVDepth):
         B, N, H, W = gt_depths.shape  ## [1, 1, 384, 1280]
         gt_depths = gt_depths.view(B * N,
                                    H // self.downsample, self.downsample,
-                                   W // self.downsample, self.downsample, 1)  ### [4, 48, 8, 160, 8, 1]
-        gt_depths = gt_depths.permute(0, 1, 3, 5, 2, 4).contiguous()  ### B * N, H // self.downsample, W // self.downsample, 1,  self.downsample,  self.downsample [1, 48, 160, 1, 8, 8]
-        gt_depths = gt_depths.view(-1, self.downsample * self.downsample) ### [30720, 64]
-        gt_depths_tmp = torch.where(gt_depths == 0.0, 1e5 * torch.ones_like(gt_depths), gt_depths) ### [30720, 64]
-        gt_depths = torch.min(gt_depths_tmp, dim=-1).values  ### [30720]
-        gt_depths = gt_depths.view(B * N, H // self.downsample, W // self.downsample) ### [1, 48, 160]
+                                   W // self.downsample, self.downsample, 1)  
+        gt_depths = gt_depths.permute(0, 1, 3, 5, 2, 4).contiguous()  
+        gt_depths = gt_depths.view(-1, self.downsample * self.downsample) #
+        gt_depths_tmp = torch.where(gt_depths == 0.0, 1e5 * torch.ones_like(gt_depths), gt_depths) 
+        gt_depths = torch.min(gt_depths_tmp, dim=-1).values  #
+        gt_depths = gt_depths.view(B * N, H // self.downsample, W // self.downsample)
         
         # [min - step / 2, min + step / 2] creates min depth
-        gt_depths = (gt_depths - (self.grid_config['dbound'][0] - self.grid_config['dbound'][2] / 2)) / self.grid_config['dbound'][2] ### [1, 48, 160]
+        gt_depths = (gt_depths - (self.grid_config['dbound'][0] - self.grid_config['dbound'][2] / 2)) / self.grid_config['dbound'][2]
         gt_depths_vals = gt_depths.clone()
         
-        gt_depths = torch.where((gt_depths < self.D + 1) & (gt_depths >= 0.0), gt_depths, torch.zeros_like(gt_depths))  ### [1, 48, 160]
-        gt_depths = F.one_hot(gt_depths.long(), num_classes=self.D + 1).view(-1, self.D + 1)[:, 1:]  ### [30720, 112]
+        gt_depths = torch.where((gt_depths < self.D + 1) & (gt_depths >= 0.0), gt_depths, torch.zeros_like(gt_depths))  
+        gt_depths = F.one_hot(gt_depths.long(), num_classes=self.D + 1).view(-1, self.D + 1)[:, 1:] 
         
         return gt_depths_vals, gt_depths.float()
     
@@ -234,10 +234,10 @@ class ViewTransformerLiftSplatShootVoxel(ViewTransformerLSSBEVDepth):
         return gt_depths.float()
     
     @force_fp32()
-    def get_bce_depth_loss(self, depth_labels, depth_preds):  ### [1, 1, 384, 1280]  [1, 112, 48, 160]
-        _, depth_labels = self.get_downsampled_gt_depth(depth_labels) ###  [30720, 112]
+    def get_bce_depth_loss(self, depth_labels, depth_preds):  
+        _, depth_labels = self.get_downsampled_gt_depth(depth_labels) 
         # depth_labels = self._prepare_depth_gt(depth_labels)
-        depth_preds = depth_preds.permute(0, 2, 3, 1).contiguous().view(-1, self.D)  ### [30720, 112]
+        depth_preds = depth_preds.permute(0, 2, 3, 1).contiguous().view(-1, self.D)  
         fg_mask = torch.max(depth_labels, dim=1).values > 0.0
         depth_labels = depth_labels[fg_mask]
         depth_preds = depth_preds[fg_mask]
@@ -246,15 +246,15 @@ class ViewTransformerLiftSplatShootVoxel(ViewTransformerLSSBEVDepth):
         return depth_loss
 
     @force_fp32()
-    def get_smooth_depth_loss(self, depth_labels, depth_preds):  ### [1,  384, 1280]  [1, 112, 48, 160]
+    def get_smooth_depth_loss(self, depth_labels, depth_preds):  
        
         B,D,H,W = depth_preds.shape
-        depth_labels =  F.interpolate(depth_labels, [ H, W], mode='bilinear', align_corners=False)  ## [1, 1, 48, 160]
+        depth_labels =  F.interpolate(depth_labels, [ H, W], mode='bilinear', align_corners=False)  
 
         with torch.cuda.device_of(depth_preds):
             disp = torch.reshape(torch.arange(0, D, device=torch.cuda.current_device(), dtype=torch.float32),[1,D,1,1])
             disp = disp.repeat(depth_preds.size()[0], 1, depth_preds.size()[2], depth_preds.size()[3])
-            depth_preds = torch.sum(depth_preds * disp, 1).unsqueeze(1)  ## [1, 1, 48, 160]
+            depth_preds = torch.sum(depth_preds * disp, 1).unsqueeze(1) 
 
         mask = (depth_labels > 0)  
         mask.detach_()
@@ -356,16 +356,16 @@ class ViewTransformerLiftSplatShootVoxel(ViewTransformerLSSBEVDepth):
         
         (x, rots, trans, intrins, post_rots, post_trans, bda, mlp_input) = input[:8]
         
-        B, N, C, H, W = x.shape  ### (2, 1, 240, 48, 160)
+        B, N, C, H, W = x.shape 
         x = x.view(B * N, C, H, W)
 
         calib = input[16]
 
         if  imgl.shape[1]>1:
             imgl, imgr = imgl[:, -1, ...], imgr[:, -1, ...]
-        imgl, imgr = F.interpolate(imgl.squeeze(1), size=[288, 960], mode='bilinear', align_corners=True), F.interpolate(imgr.squeeze(1), size=[288, 960], mode='bilinear', align_corners=True) #[2, 3, 384, 1280]
+        imgl, imgr = F.interpolate(imgl.squeeze(1), size=[288, 960], mode='bilinear', align_corners=True), F.interpolate(imgr.squeeze(1), size=[288, 960], mode='bilinear', align_corners=True) 
         stereo_volume = self.leamodel(imgl, imgr, calib )["classfy_volume"]   
-        stereo_volume = F.interpolate(stereo_volume, size=[ 112, H, W ], mode='trilinear', align_corners=True).squeeze(1)  ### [2, 112, 48, 160] 
+        stereo_volume = F.interpolate(stereo_volume, size=[ 112, H, W ], mode='trilinear', align_corners=True).squeeze(1)  ##
         stereo_volume = F.softmax(-stereo_volume, dim=1)
 
 
@@ -394,8 +394,8 @@ class ViewTransformerLiftSplatShootVoxel(ViewTransformerLSSBEVDepth):
         bev_feat = self.voxel_pooling(geom, volume) 
         
 
-        img_left_ref, img_left_sour = left_input[:, -1, ...].unsqueeze(1).permute(0,1,4,2,3).cuda(), left_input[:,:-1, ...].permute(0,1,4,2,3).cuda()  ### [2, 1, 3, 384, 1280]  [2, 3, 3, 384, 1280]
-        curr_feature, batch_waped_feature = self.temporal_encoder( ref_images=img_left_ref, source_images=img_left_sour, intrinsics=intrins ) ##torch.Size([2, 64, 96, 320]) torch.Size([2, 3, 112, 96, 320])
+        img_left_ref, img_left_sour = left_input[:, -1, ...].unsqueeze(1).permute(0,1,4,2,3).cuda(), left_input[:,:-1, ...].permute(0,1,4,2,3).cuda()  #
+        curr_feature, batch_waped_feature = self.temporal_encoder( ref_images=img_left_ref, source_images=img_left_sour, intrinsics=intrins ) #
         
 
         curr_feature = F.interpolate(curr_feature, size=[H, W], mode='bilinear', align_corners=True) 

@@ -190,7 +190,7 @@ class CustomSemanticKITTILssDataset(CustomSemanticKITTIDataset):
                 if input_dict is None:
                     return None
                 self.pre_pipeline(input_dict)
-                example = self.pipeline(input_dict)  ### img_metas img_inputs gt_occ points_occ points_uv
+                example = self.pipeline(input_dict) 
                 queue.append(example)
             return self.union2one(queue)
         else:
@@ -202,7 +202,7 @@ class CustomSemanticKITTILssDataset(CustomSemanticKITTIDataset):
 
 
     def union2one(self, queue):
-        imgs_list0 = [each['img_inputs'][0][0].data for each in queue] #### 每个img_inputs有10个输入 queue[0]['img_inputs'][0][0]   queue[0]['img_inputs'][1][0]
+        imgs_list0 = [each['img_inputs'][0][0].data for each in queue] 
         imgs_list1 = [each['img_inputs'][1][0].data for each in queue]
         queue[-1]['img_inputs'][0][0] = DC(torch.stack(imgs_list0), cpu_only=False, stack=True)
         queue[-1]['img_inputs'][1][0] = DC(torch.stack(imgs_list1), cpu_only=False, stack=True)
@@ -293,7 +293,7 @@ class CustomSemanticKITTILssDataset(CustomSemanticKITTIDataset):
 
         input_dict.update(
             dict(
-                img_filename=image_paths,    ###### image2, imag3
+                img_filename=image_paths,   
        
                 lidar2img=lidar2img_rts,
           

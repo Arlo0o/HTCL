@@ -120,41 +120,25 @@ class ResnetEncoderMatching(nn.Module):
                 if lookup_pose.sum() == 0:
                     continue
 
-                lookup_feat = lookup_feat.repeat([self.num_depth_bins, 1, 1, 1])   #### repeat on the depth dimension
+                lookup_feat = lookup_feat.repeat([self.num_depth_bins, 1, 1, 1])  
                 pix_locs = self.projector(world_points, _K, lookup_pose)
                 warped = F.grid_sample(lookup_feat, pix_locs, padding_mode='zeros', mode='bilinear',
-                                    align_corners=True)  ### warped feature [112, 64, 96, 320] D C H W
+                                    align_corners=True)  #
                 waped_feature.append(warped)
 
 
-            #     # diffs = torch.abs(warped - current_feats[batch_idx:batch_idx + 1]).mean(1) * edge_mask 
-
-            #     # with torch.no_grad():
-            #     curr_affinity = current_feats[batch_idx:batch_idx + 1]
-            #     # curr_affinity = self.curr_affinity( curr_affinity )
-            #     # warped =  self.warped_affinity( warped)      
-            #     diffs = self.cos(curr_affinity,  warped) 
-            #     ## warped[112, 64, 96, 320]  current_feats[1, 64, 96, 320]  edge_mask[112, 96, 320]  diffs [112, 96, 320] ### directly find difference and apply mask for edges
-            
-            #     # integrate into cost volume
-            #     cost_volume = cost_volume + diffs
-            #     counts = counts + (diffs > 0).float()  ## [112, 96, 320]
-            # # average over lookup images
-            # cost_volume = cost_volume / (counts + 1e-7)
-            # batch_cost_volume.append(cost_volume)  ### [112, 96, 320]
 
             waped_feature= torch.stack(waped_feature, 0)
             batch_waped_feature.append(waped_feature)
 
         
-        # batch_cost_volume = torch.stack(batch_cost_volume, 0) ### len=2
 
-        batch_waped_feature = torch.stack(batch_waped_feature, 0)  ### 2, 1, 112, 64, 96, 320
+
+        batch_waped_feature = torch.stack(batch_waped_feature, 0)  
 
         batch_waped_feature = batch_waped_feature.squeeze(1).permute(0,2,1,3,4)
         batch_waped_feature = batch_waped_feature.mean(1)
-        # batch_waped_feature = self.fuse64to1(batch_waped_feature)
-        # temporal_volume = self.ca3d(   query=batch_cost_volume, x=batch_waped_feature  ).squeeze(1)
+   
 
         return batch_waped_feature
 
@@ -191,7 +175,7 @@ class ResnetEncoderMatching(nn.Module):
 
         # feature extraction
         self.features = self.feature_extraction(current_image, return_all_feats=True)
-        current_feats = self.features[-1]  ## [2, 64, 96, 320]
+        current_feats = self.features[-1]  
 
         # feature extraction on lookup images - disable gradients to save memory
         with torch.no_grad():
@@ -200,13 +184,13 @@ class ResnetEncoderMatching(nn.Module):
             batch_size, num_frames, chns, height, width = lookup_images.shape
             lookup_images = lookup_images.reshape(batch_size * num_frames, chns, height, width)
         lookup_feats = self.feature_extraction(lookup_images,
-                                                return_all_feats=False) ## [2, 64, 96, 320]
+                                                return_all_feats=False)
         _, chns, height, width = lookup_feats.shape
-        lookup_feats = lookup_feats.reshape(batch_size, num_frames, chns, height, width) ## [2, 1, 64, 96, 320]
+        lookup_feats = lookup_feats.reshape(batch_size, num_frames, chns, height, width)
  
         # warp features to find cost volume
         batch_waped_feature  = \
-            self.match_features(current_feats, lookup_feats, poses, K, invK) ## cost_volume[2, 112, 96, 320]  batch_waped_feature[2, 112, 64, 96, 320]
+            self.match_features(current_feats, lookup_feats, poses, K, invK) 
 
 
         return  current_feats, batch_waped_feature

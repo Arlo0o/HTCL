@@ -157,7 +157,7 @@ python  run_eval_kitti.sh   \
 
 bash  run_eval_kitti.sh    \
             projects/configs/occupancy/semantickitti/temporal_baseline.py  \
-             /code/occupancy-lss/occupancy-lss-miou17_13/work_dirs/baseline_0706_temporal_crossattention_lr/best_semkitti_combined_IoU_epoch_1.pth   1
+             /code/occupancy-lss/occupancy-lss-miou17_13/work_dirs/semantic_kitti_checkpoint.pth   1
 
 
 ## Multiple GPUS

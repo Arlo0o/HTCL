@@ -216,7 +216,7 @@ class CustomResNet3D(BaseModule):
         
         return loss_rel_ce
 
-    def forward(self, x):  ### [4, 128, 128, 128, 16]
+    def forward(self, x):  
         x = self.input_proj(x)
         res = []
         for index, layer in enumerate(self.layers):

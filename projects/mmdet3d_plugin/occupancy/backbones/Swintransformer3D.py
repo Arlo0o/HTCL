@@ -35,8 +35,8 @@ class Swintransformer3D(BaseModule):
         # self.model.load_state_dict(model_dict)
         # print("reload model!")
       
-    def forward(self, x):  ### [4, 128, 128, 128, 16]
-        # x = F.interpolate(x, size=[ 256, 256, 32 ], mode='trilinear', align_corners=True)  
+    def forward(self, x):  
+  
         x = F.interpolate(x, size=[ 128, 128, 32 ], mode='trilinear', align_corners=True) 
         x = self.model(x)
     

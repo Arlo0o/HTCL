@@ -241,8 +241,8 @@ class OccHead(nn.Module):
         assert type(voxel_feats) is list and len(voxel_feats) == self.num_level
         
         # forward voxel 
-        if self.supervise_voxel:  ## True ## voxel_feats [4, 384, 128, 128, 16]
-            output_voxels = self.forward_voxel(voxel_feats)  ## [ 4, 20, 128, 128, 16 ]
+        if self.supervise_voxel: 
+            output_voxels = self.forward_voxel(voxel_feats)  
         else:
             output_voxels = None
         
@@ -360,9 +360,9 @@ class OccHead(nn.Module):
         
         return loss_dict
 
-    def loss_point_single(self, output_points, target_points, tag):  ## [80548, 20] [80548, 4]
-        target_points = target_points[:, -1].long()  ## [80548]
-        # print('point labels: ', torch.unique(target_points, return_counts=True))
+    def loss_point_single(self, output_points, target_points, tag):  
+        target_points = target_points[:, -1].long()
+ 
         
         loss_dict = {}
         
@@ -410,7 +410,7 @@ class OccHead(nn.Module):
         loss_dict = {}
         # 1. compute the losses for voxel-level semantic occupancy
         if self.supervise_voxel:
-            for index, output_voxel in enumerate(output_voxels):  ### output_voxel[4, 20, 128, 128, 16]  target_voxels[4, 256, 256, 32]
+            for index, output_voxel in enumerate(output_voxels):  
                 if self.semantic_kitti:  ##True
                     loss_dict.update(self.loss_voxel_single_semkitti(output_voxel, target_voxels[index], tag='{}'.format(index), 
                                                 compute_metric=(index == 0), **kwargs))
@@ -418,9 +418,9 @@ class OccHead(nn.Module):
                     loss_dict.update(self.loss_voxel_single(output_voxel, target_voxels[index], tag='{}'.format(index)))
         
         # 2. compute the losses for point-level semantic segmentation
-        if self.supervise_points:   ### output_points[20120, 20][20263, 20][19859, 20][20306, 20]  target_points[20120, 4][20263, 4][19859, 4][20306, 4]
-            output_points = torch.cat(output_points, dim=0) ## [80548, 20]
-            target_points = torch.cat(target_points, dim=0) ## [80548, 4]
+        if self.supervise_points:   
+            output_points = torch.cat(output_points, dim=0) 
+            target_points = torch.cat(target_points, dim=0) 
             loss_dict.update(self.loss_point_single(output_points, target_points, tag=''))
         
         return loss_dict

@@ -143,7 +143,7 @@ class LoadMultiViewImageFromFiles_SemanticKitti(object):
             resize += np.random.uniform(*self.data_config['resize'])
             resize_dims = (int(W * resize), int(H * resize))
             newW, newH = resize_dims
-            # 高度上只裁上半部分
+
             crop_h = int((1 - np.random.uniform(*self.data_config['crop_h'])) * newH) - fH
             crop_w = int(np.random.uniform(0, max(0, newW - fW)))
             crop = (crop_w, crop_h, crop_w + fW, crop_h + fH)
@@ -167,14 +167,14 @@ class LoadMultiViewImageFromFiles_SemanticKitti(object):
 
     def get_inputs(self, results, flip=None, scale=None):
                 
-        # load the monocular image for semantic kitti
-        img_filenames = results['img_filename']  #### 两个
+
+        img_filenames = results['img_filename']  
 
         assert len(img_filenames) == 2
 
-        calib = results['calib']  #### 两个
+        calib = results['calib'] 
 
-        # ##############-------------------2----------------################
+
         img_filenames2 = img_filenames[1]
 
         img2 = mmcv.imread(img_filenames2, 'unchanged')
@@ -233,7 +233,7 @@ class LoadMultiViewImageFromFiles_SemanticKitti(object):
         
         results['canvas2'] = canvas2
 
-        ##############-------------------1----------------################
+  
         img_filenames = img_filenames[0]
 
         img = mmcv.imread(img_filenames, 'unchanged')

@@ -228,7 +228,7 @@ class ResnetEncoderMatching(nn.Module):
                 lookup_feat = lookup_feat.repeat([self.num_depth_bins, 1, 1, 1])   #### repeat on the depth dimension
                 pix_locs = self.projector(world_points, _K, lookup_pose)
                 warped = F.grid_sample(lookup_feat, pix_locs, padding_mode='zeros', mode='bilinear',
-                                       align_corners=True)  ### warped feature [112, 64, 96, 320] D C H W
+                                       align_corners=True)  ### 
 
                 # warped_affinity = 
 
@@ -257,7 +257,7 @@ class ResnetEncoderMatching(nn.Module):
 
                 # integrate into cost volume
                 cost_volume = cost_volume + diffs
-                counts = counts + (diffs > 0).float()  ## [112, 96, 320]
+                counts = counts + (diffs > 0).float()  
             # average over lookup images
             cost_volume = cost_volume / (counts + 1e-7)
 
@@ -267,12 +267,12 @@ class ResnetEncoderMatching(nn.Module):
             if self.set_missing_to_max:
                 cost_volume = cost_volume * (1 - missing_val_mask) + \
                     cost_volume.max(0)[0].unsqueeze(0) * missing_val_mask
-            batch_cost_volume.append(cost_volume)  ### [112, 96, 320]
+            batch_cost_volume.append(cost_volume) 
             cost_volume_masks.append(missing_val_mask)
             
             batch_waped_feature.append( warped )
         
-        batch_cost_volume = torch.stack(batch_cost_volume, 0) ### len=2
+        batch_cost_volume = torch.stack(batch_cost_volume, 0) 
         cost_volume_masks = torch.stack(cost_volume_masks, 0)
 
         batch_waped_feature = torch.stack(batch_waped_feature, 0)

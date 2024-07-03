@@ -48,20 +48,7 @@ class Gwc_encoder(nn.Module):
                 m.bias.data.zero_()
             elif isinstance(m, nn.Linear):
                 m.bias.data.zero_()
-        # ######-------------------load
-        checkpointpath = '/code/stereo/mul/checkpoint/gwccheckpoints/kitti15/gwcnet-g/best.ckpt'
-        # '/code/mul/checkpoint/gwccheckpoints/official_gwc_sceneflo_g.ckpt'
-        state_dict = torch.load( checkpointpath , map_location='cpu')['model']
-        model_dict=self.state_dict()
-        for k, v in state_dict.items():
-            name = k[7:]
-            if name in model_dict:
-                print("****************-----------", k)
-                pretrained_dict = {name: v}
-        model_dict.update(pretrained_dict)
-        self.load_state_dict(model_dict)
-        print("reload model!")
-        # ######-------------------
+      
 
     def forward(self, left, right, calib ):
         features_left = self.feature_extraction(left)
