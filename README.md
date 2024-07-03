@@ -150,14 +150,15 @@ python tools/train.py   \
 - **Evaluate with single GPUs:**
 ```
 export PYTHONPATH="."  
-python  run_eval_kitti.sh   \
+bash  run_eval_kitti.sh   \
             projects/configs/occupancy/semantickitti/temporal_baseline.py \
             pretrain/pretrain.pth 
 ```
 
-bash  run_eval_kitti.sh    \
-            projects/configs/occupancy/semantickitti/temporal_baseline.py  \
-             /code/occupancy-lss/occupancy-lss-miou17_13/work_dirs/semantic_kitti_checkpoint.pth   1
+bash  run_eval_kitti.sh   \
+            projects/configs/occupancy/semantickitti/temporal_baseline.py \
+            pretrain.pth 
+
 
 
 ## Multiple GPUS

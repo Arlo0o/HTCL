@@ -9,9 +9,9 @@ import warnings
 from mmcv import Config, DictAction
 from mmcv.cnn import fuse_conv_bn
 from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
-from mmcv.runner import (get_dist_info, init_dist, load_checkpoint,
-                         wrap_fp16_model)
 
+from mmcv.runner import (get_dist_info, init_dist, load_checkpoint, save_checkpoint,
+                         wrap_fp16_model)
 from mmdet3d.apis import single_gpu_test
 from mmdet3d.datasets import build_dataset
 from mmdet3d.models import build_model
