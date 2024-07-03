@@ -190,7 +190,7 @@ Many thanks to these excellent open source projects:
 If you find our paper and code useful for your research, please consider citing:
 
 ```bibtex
-@article{li2023bridging,
+@article{li2024hierarchical,
   title={Hierarchical Temporal Context Learning for Camera-based Semantic Scene Completion},
   author={Li, Bohan and Deng, Jiajun and Zhang, Wenyao and Liang, Zhujin and Du, Dalong and Jin, Xin and Zeng, Wenjun},
   journal={arXiv preprint arXiv:2407.02077},
