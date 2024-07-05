@@ -1,6 +1,9 @@
 ## [ECCV 2024] Hierarchical Temporal Context Learning for Camera-based Semantic Scene Completion
 
 
+ECCV 2024 \
+[![arXiv paper](https://img.shields.io/badge/arXiv%20%2B%20supp-2407.02077-purple)](https://arxiv.org/abs/2407.02077) 
+[![Code page](https://img.shields.io/badge/Project%20Page-HTCL-red)](https://github.com/Arlo0o/HTCL/)
 
 
 ### Demo:
@@ -16,7 +19,9 @@ Camera-based 3D semantic scene completion (SSC) is pivotal for predicting compli
 The primary innovation of this work involves decomposing temporal context learning into two hierarchical steps: (a) cross-frame affinity measurement and (b) affinity-based dynamic refinement. Firstly, to separate critical relevant context from redundant information, we introduce the pattern affinity with scale-aware isolation and multiple independent learners for fine-grained contextual correspondence modeling. Subsequently, to dynamically compensate for incomplete observations, we adaptively refine the feature sampling locations based on initially identified locations with high affinity and their neighboring relevant regions. Our method ranks $1^{st}$ on the SemanticKITTI benchmark and even surpasses LiDAR-based methods in terms of mIoU on the OpenOccupancy benchmark.
 
 
-### [*code](https://github.com/Arlo0o/HTCL/tree/master?tab=readme-ov-file)   [*arxiv](https://arxiv.org/abs/2407.02077)
+
+ 
+
 
 
 # Table of Content
