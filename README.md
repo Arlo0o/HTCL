@@ -1,7 +1,8 @@
 ## [ECCV 2024] Hierarchical Temporal Context Learning for Camera-based Semantic Scene Completion
 
 
-[ECCV 2024] :  [![arXiv paper](https://img.shields.io/badge/arXiv%20%2B%20supp-2407.02077-purple)](https://arxiv.org/abs/2407.02077) 
+[ECCV 2024] \
+ [![arXiv paper](https://img.shields.io/badge/arXiv%20%2B%20supp-2407.02077-purple)](https://arxiv.org/abs/2407.02077) 
 [![Code page](https://img.shields.io/badge/Project%20Page-HTCL-red)](https://github.com/Arlo0o/HTCL/)
 
 
