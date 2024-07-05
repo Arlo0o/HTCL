@@ -35,13 +35,13 @@ class multi_patch2d(nn.Module):
         self.atrous_block1 = nn.Conv2d(in_channel, depth, 3, 1, padding=1, dilation=1)
         self.atrous_block2 = nn.Conv2d(in_channel, depth, 3, 1, padding=2, dilation=2)
         self.atrous_block4 = nn.Conv2d(in_channel, depth, 3, 1, padding=4, dilation=4)
-        # self.conv_1x1_output = nn.Conv2d(depth * 3, out_channel, 1, 1)
+     
     def forward(self, x):
         atrous_block1 = self.atrous_block1(x)
         atrous_block2 = self.atrous_block2(x)
         atrous_block4 = self.atrous_block4(x)
         net = torch.cat([ atrous_block1, atrous_block2, atrous_block4 ], dim=1)
-        # net = self.conv_1x1_output(net)
+     
         return net
     
 
@@ -49,18 +49,18 @@ class multi_patch3d(nn.Module):
     def __init__(self, in_channel=32, out_channel=None, depth=8):
         super(multi_patch3d, self).__init__()
         self.atrous_block1 = nn.Sequential( nn.Conv3d(in_channel, depth, 3, 1, padding=1, dilation=1), 
-                            nn.GELU(), nn.GroupNorm(1, depth) ) #### modify
+                            nn.GELU(), nn.GroupNorm(1, depth) )  
         self.atrous_block2 = nn.Sequential( nn.Conv3d(in_channel, depth, 3, 1, padding=2, dilation=2), 
                             nn.GELU(), nn.GroupNorm(1, depth) )
         self.atrous_block4 = nn.Sequential( nn.Conv3d(in_channel, depth, 3, 1, padding=4, dilation=4),
                             nn.GELU(), nn.GroupNorm(1, depth) )
-        # self.conv_1x1_output = nn.Conv2d(depth * 3, out_channel, 1, 1)
+ 
     def forward(self, x):
         atrous_block1 = self.atrous_block1(x)
         atrous_block2 = self.atrous_block2(x)
         atrous_block4 = self.atrous_block4(x)
         net = torch.cat([ atrous_block1, atrous_block2, atrous_block4 ], dim=1)
-        # net = self.conv_1x1_output(net)
+    
         return net
     
 class AffinityFeature(nn.Module):
@@ -97,14 +97,14 @@ class multipatch_affinity(nn.Module):
         self.affinity1 = AffinityFeature(dilation=1)
         self.affinity2 = AffinityFeature(dilation=1)
         # self.affinity4 = AffinityFeature(dilation=4)
-        # self.affinity8 = AffinityFeature(dilation=8)
+ 
         self.affinityfuse = nn.Conv2d(8*2 , outdim, kernel_size=1, stride=1, padding=0 )
     def forward(self, x ):
         x = self.affinityin(x)
         affinity1 = self.affinity1( x )
         affinity2 = self.affinity2( affinity1 )
         # affinity4 = self.affinity4( x )
-        # affinity8 = self.affinity8( x )
+  
         out = self.affinityfuse( torch.cat( ( affinity1,affinity2 ), dim=1) )
         return  out
 

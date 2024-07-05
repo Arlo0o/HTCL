@@ -93,17 +93,4 @@ class hourglass(nn.Module):
         conv6 = F.relu(self.conv6(conv5) + self.redir1(x), inplace=True)
         return conv6
 
-if __name__ == "__main__":
-    model=LinearAttention3D(dim=128, query_dim=32, heads=4, dim_head=32).cuda()
-    while 1:
-        print(  model(torch.randn(1, 128, 128, 128, 32).cuda(),torch.randn(1, 32, 128, 128, 32).cuda() ).shape[-3:]  )
 
-    # from monai.networks.nets import SwinUNETR
-    # model = SwinUNETR(img_size=(128, 128, 32),
-    #               in_channels=128,
-    #               out_channels=384,
-    #               feature_size=48,
-    #               use_checkpoint=True,
-    #               ).cuda()
-    # while 1:
-    #     print(  model(torch.randn(1, 128, 128, 128, 32).cuda() ).shape  )

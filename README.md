@@ -1,6 +1,8 @@
 ## [ECCV 2024] Hierarchical Temporal Context Learning for Camera-based Semantic Scene Completion
 
 
+- [code](https://github.com/Arlo0o/HTCL/tree/master?tab=readme-ov-file)  - [arxiv](https://arxiv.org/abs/2407.02077)
+
 
 ### Demo:
 <div align=center><img width="640" height="360" src="./assets/teaser.gif"/></div>

@@ -39,7 +39,7 @@ def warp( x, calib, down, maxdepth ):
     yy = yy.view(1, C, new_D, 1).repeat(B, 1, 1, 1)
     grid = torch.cat((xx, yy), -1).float()
     vgrid = Variable(grid)
-    # scale grid to [-1,1]
+ 
     vgrid[:, :, :, 0] = 2.0 * vgrid[:, :, :, 0] / max(D - 1, 1) - 1.0
     vgrid[:, :, :, 1] = 2.0 * vgrid[:, :, :, 1] / max(C - 1, 1) - 1.0
     if float(torch.__version__[:3])>1.2:
@@ -80,14 +80,12 @@ class LEA_encoder(nn.Module):
         self.feature = newFeature(network_arch_fea, cell_arch_fea, args=self.opt)  
         self.matching= newMatching(network_arch_mat, cell_arch_mat, args=self.opt) 
         self.disp = Disp(self.maxdisp)
-        # for p in self.parameters():  
-        #     p.requires_grad=False
-        print("requires_grad....")
+     
 
-    def forward(self, x, y, calib):  ## train[1, 3, 240, 528]  test[1, 3, 288, 1152]
+    def forward(self, x, y, calib):  
        
-        x = self.feature(x)   ## [1, 32, 96, 384]   
-        y  = self.feature(y)   ## [1, 32, 96, 384]   
+        x = self.feature(x)     
+        y  = self.feature(y)    
 
         with torch.cuda.device_of(x):
             cost = x.new().resize_(x.size()[0], x.size()[1]*2, int(self.maxdisp/3),  x.size()[2],  x.size()[3]).zero_() 
