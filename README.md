@@ -36,7 +36,7 @@ The primary innovation of this work involves decomposing temporal context learni
 - [2023/07]: Demo and code released.
 - [2023/07]: Paper is on [arxiv](https://arxiv.org/abs/2407.02077).
 - [2023/07]: Paper is accepted on ECCV 2024.
-- [2024/02]: Update visualization tools.
+- [2024/01]: Update visualization tools.
 
 # Quick Installation on A100
 
@@ -100,7 +100,7 @@ cd mmdetection3d
 git checkout v0.17.1 # Other versions may not be compatible.
 python setup.py install
 ```
-Please check your [CUDA version](https://github.com/open-mmlab/mmdetection3d/issues/2427) if encountered import problem. 
+Please check your CUDA version for [mmdet3d](https://github.com/open-mmlab/mmdetection3d/issues/2427) if encountered import problem. 
 
 **f. Install other dependencies.**
 ```shell
