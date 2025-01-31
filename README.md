@@ -31,6 +31,7 @@ The primary innovation of this work involves decomposing temporal context learni
 - [Prepare Data](#prepare-data)
 - [Pretrained Model](#pretrained-model)
 - [Training & Evaluation](#training--evaluation)
+- [Visualization](#visualization)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
 
@@ -179,6 +180,18 @@ bash run.sh  \
  bash tools/dist_test.sh  \
             projects/configs/occupancy/semantickitti/temporal_baseline.py \
             pretrain/pretrain.pth  n
+```
+
+## Visualization
+
+We use mayavi to visualize the predictions. Please install [mayavi](https://docs.enthought.com/mayavi/mayavi/installation.html) following the official installation instruction. Then, use the following commands to visualize the outputs.
+
+
+```
+export PYTHONPATH="."  
+python tools/save_vis.py projects/configs/occupancy/semantickitti/stereoscene.py \
+            pretrain/pretrain_stereoscene.pth  --eval mAP
+python tools/visualization.py
 ```
 
 
