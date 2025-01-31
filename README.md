@@ -20,10 +20,6 @@ The primary innovation of this work involves decomposing temporal context learni
 
 
 
- 
-
-
-
 # Table of Content
 - [News](#news)
 - [Quick Start](#quick-installation-on-a100)
@@ -104,6 +100,7 @@ cd mmdetection3d
 git checkout v0.17.1 # Other versions may not be compatible.
 python setup.py install
 ```
+Please check your [CUDA version](https://github.com/open-mmlab/mmdetection3d/issues/2427) if encountered import problem. 
 
 **f. Install other dependencies.**
 ```shell
