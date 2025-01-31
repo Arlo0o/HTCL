@@ -33,10 +33,10 @@ The primary innovation of this work involves decomposing temporal context learni
 
 
 # News
-- [2023/07]: Demo and code released.
-- [2023/07]: Paper is on [arxiv](https://arxiv.org/abs/2407.02077).
-- [2023/07]: Paper is accepted on ECCV 2024.
-- [2024/01]: Update visualization tools.
+- [2024/07]: Demo and code released.
+- [2024/07]: Paper is on [arxiv](https://arxiv.org/abs/2407.02077).
+- [2024/07]: Paper is accepted on ECCV 2024.
+- [2025/01]: Update visualization tools.
 
 # Quick Installation on A100
 
