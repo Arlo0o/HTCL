@@ -1,4 +1,4 @@
-## [ECCV 2024] Hierarchical Temporal Context Learning for Camera-based Semantic Scene Completion
+## [ECCV 2024, TPAMI 2025] Hierarchical Temporal Context Learning for Camera-based Semantic Scene Completion
 
 
 
@@ -216,5 +216,11 @@ If you find our paper and code useful for your research, please consider citing:
   year={2024}
 }
 
+@article{li2024hierarchical,
+  title={Hierarchical Context Alignment with Disentangled Geometric and Temporal Modeling for Semantic Occupancy Prediction},
+  author={Li, Bohan and Jin, Xin and Deng, Jiajun and Sun, Yasheng and Wang, Xiaofeng and Zeng, Wenjun},
+  journal={arXiv preprint arXiv:2412.08243},
+  year={2024}
+}
 ```
 
